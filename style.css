@@ -1,5 +1,6 @@
 *{
     box-sizing: border-box;
+    word-break: break-all;
 }
 ion-icon  {
     font-size: 40px;
@@ -8,9 +9,7 @@ ion-icon  {
 
 
 body { 
-    background-color: lightgray;
     font-family: 'Roboto', sans-serif;
-  
 }
 
 
@@ -34,6 +33,10 @@ strong {
 }
 
 
+.Contain{
+    position: relative;
+    background-color: lightgray;
+}
 
 .Top {
     width: 100%;

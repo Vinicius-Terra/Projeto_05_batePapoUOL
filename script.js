@@ -3,7 +3,6 @@
 let UltimaMensagem = {}
 let nick = ""
 
-
 function Menu() {
 
     document.querySelector(".overlay").classList.remove("Invisivel");
@@ -20,6 +19,7 @@ function SairMenu() {
 
 function SelecionarPessoas (Escolhido)  {
 
+    console.log(Escolhido.nextElementSibling)
     const pessoa = document.querySelector(".Pessoa > .Selecionado");
         if (pessoa === null) {
             Escolhido.nextElementSibling.classList.add("Selecionado");
@@ -40,6 +40,7 @@ function SelecionarVisibilidade (Escolhido)  {
 
     const pessoa = document.querySelector(".Visibilidade > .Selecionado");
         if (pessoa === null) {
+            
             Escolhido.nextElementSibling.classList.add("Selecionado");
             Escolhido.nextElementSibling.classList.remove("Invisivel");
         }
@@ -54,6 +55,7 @@ function SelecionarVisibilidade (Escolhido)  {
 
 QuemEhVoce ();
 CarregarMensagens ();
+CarregarParticipantesAtivos ()
 
 function CarregarMensagens () {
 
@@ -81,7 +83,7 @@ function processarMensagens (response) {
         else {
            Para = "Para"
         }
-        if (Mensagem.type === "private_message" && Mensagem.to !== nick) {
+        if (Mensagem.type === "private_message" && Mensagem.to !== nick &&  Mensagem.to !== "Todos" && Mensagem.from !== nick) {
             console.log(Mensagem.type)
         }
         else {
@@ -123,17 +125,30 @@ function EnviarMensagem() {
 
     let Textoensagem = document.querySelector("input").value;
 
-    console.log(Textoensagem)
+    let para = document.querySelector(".Pessoa > .Selecionado").parentElement;
+    para = para.firstElementChild.lastElementChild.innerHTML
 
+    let tipo = document.querySelector(".Visibilidade > .Selecionado").parentElement;
+    tipo = tipo.firstElementChild.lastElementChild.innerHTML
+
+
+    if (tipo === "Público") {
+
+        tipo = "message"
+    }
+    else  {
+        tipo = "private_message"
+    }
+    
     let Mensagem = {
         from: `${nick}` ,
         text: `${Textoensagem}` ,
-        to: `Todos` ,
-        type: `message` 
+        to: `${para}` ,
+        type: `${tipo}` 
 
     }
 
-    console.log(Mensagem)
+  
     const requisicao = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', Mensagem);
 
     requisicao.then(processarMensagens)
@@ -157,7 +172,6 @@ function Logar () {
 
     const nickname = {name: `${nick}`};
     const promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', nickname);
-    console.log(promessa)
     promessa.then(setInterval (Manter , 4000));
     promessa.catch(erroAologar)
 
@@ -171,8 +185,44 @@ function erroAologar () {
 
 function Manter () {
 
-    console.log("entrei em manter")
-     const nickname = {name: `${nick}`};
+    const nickname = {name: `${nick}`};
     const response = axios.post('https://mock-api.driven.com.br/api/v6/uol/status', nickname); 
-    console.log(response)
+
+    CarregarParticipantesAtivos ()
+}
+
+
+function CarregarParticipantesAtivos () {
+
+    const promise = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
+    promise.then(processarParticipantesAtivos);
+}
+
+function processarParticipantesAtivos (response) {
+
+    let PessoaS = document.querySelector(".Pessoas")
+
+    PessoaS.innerHTML = `<div class="Pessoa">
+    <div onclick="SelecionarPessoas (this)" class="Flex">
+        <ion-icon name="people-outline"></ion-icon>
+        <h4>Todos</h4>
+    </div> 
+    <ion-icon class="Green Selecionado" name="checkmark-outline"></ion-icon>
+</div> `
+
+
+    for ( let i = 0; i < 12; i++){   // Carregar muitas pessoas buga meu layout
+        
+        let Pessoa = response.data [i]
+
+        console.log(Pessoa.name)
+
+        PessoaS.innerHTML += `<div class="Pessoa">
+            <div onclick="SelecionarPessoas (this)" class="Flex">
+            <ion-icon name="person-circle-outline"></ion-icon>
+                <h4>${Pessoa.name}</h4>
+            </div><ion-icon class="Green Invisivel" name="checkmark-outline"></ion-icon>
+            </div> `
+        }
+
 }
