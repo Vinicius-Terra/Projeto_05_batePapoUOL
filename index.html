@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <title>Batepapo da OUL</title>
+
+</head>
+<body>
+        <div onclick="SairMenu()" class="overlay Invisivel">
+
+        </div>
+        <div class="Menu Invisivel">
+            <div class="TopoMenu">
+                <h3>Escolha um contato</h3>
+                <h3>para enviar mensagem:</h3>    
+            </div>
+            <div class="Pessoas">
+                <div class="Pessoa">
+                    <div onclick="SelecionarPessoas (this)" class="Flex">
+                        <ion-icon name="people-outline"></ion-icon>
+                        <h4>Todos</h4>
+                    </div> 
+                    <ion-icon class="Green Invisivel" name="checkmark-outline"></ion-icon>
+                </div>
+                <div class="Pessoa">
+                    <div onclick="SelecionarPessoas (this)" class="Flex">
+                        <ion-icon name="person-circle-outline"></ion-icon>
+                        <h4>João</h4>
+                    </div> 
+                    <ion-icon class="Green Invisivel" name="checkmark-outline"></ion-icon>
+                </div>
+            </div>
+
+            <div class="MidMenu Flex">
+                <h3>Escolha a visibilidade:</h3>
+            </div>
+
+            <div class="Visibilidades">
+                <div class="Visibilidade">
+                    <div onclick="SelecionarVisibilidade (this)" class="Flex">
+                        <ion-icon name="lock-open-outline"></ion-icon>
+                        <h4>Público</h4>
+                    </div>
+                    <ion-icon class="Green Invisivel" name="checkmark-outline"></ion-icon>
+                </div>
+                <div class="Visibilidade">
+                    <div onclick="SelecionarVisibilidade (this)" class="Flex">
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+                        <h4>Reservadamente</h4>
+                    </div>
+                    <ion-icon class="Green Invisivel" name="checkmark-outline"></ion-icon>
+                </div>
+            </div>
+        </div>
+       <div class="Top">
+            <img src="/Projeto_05_batePapoUOL/imgs/logo 1.png" alt="LogoOUL">
+            <ion-icon  onclick="Menu()" name="people-outline"></ion-icon>
+        </div> 
+    <div class="Conteudo">
+            <!-- <div class="Mensagem status">
+                <p> (09:21:45) <strong>João </strong> entra na sala...dasssssssssssssssssssssssssssssssssssss</p>
+            </div>
+            <div class="Mensagem message">
+                <p> (09:22:28)  <strong>João </strong> para Todos:  Bom dia</p>
+            </div>
+            <div class="Mensagem private_message">
+                <p> (09:22:48)  <strong>João reservadamente para Maria: </strong> Oi gatinha quer tc?</p>
+           </div>  -->
+       </div> 
+        <div class="Bottom">
+            <div>
+                <input type="Escreva aqui...">
+
+            </div> 
+            <ion-icon onclick="EnviarMensagem()" name="paper-plane-outline"></ion-icon>
+        </div> 
+    </div>
+
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
