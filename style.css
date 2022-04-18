@@ -7,10 +7,10 @@ ion-icon  {
 }
 
 
-body {
+body { 
     background-color: lightgray;
     font-family: 'Roboto', sans-serif;
-    position: absolute;
+  
 }
 
 
@@ -51,7 +51,7 @@ strong {
 
 .Conteudo{
     padding: 106px 0 100px 0;
-    width: 100%;
+    width: 100%; 
     height: 100%;
     background-color: lightgray;
 }
@@ -59,9 +59,8 @@ strong {
 .Mensagem {
 
     margin-top: 4px;
-    padding: 20px 8px 20px 8px;
+    padding: 20px 8px 20px 8px; 
     width: 100%;
-    height: 100%;
     line-height: 1.4;
     display: flex;
     align-items: center;

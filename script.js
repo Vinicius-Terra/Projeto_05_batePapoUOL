@@ -24,7 +24,7 @@ function SelecionarPessoas (Escolhido)  {
         if (pessoa === null) {
             Escolhido.nextElementSibling.classList.add("Selecionado");
             Escolhido.nextElementSibling.classList.remove("Invisivel");
-            console.log("Escolhido")
+
         }
         else {
             pessoa.classList.remove("Selecionado");
@@ -32,7 +32,7 @@ function SelecionarPessoas (Escolhido)  {
 
            Escolhido.nextElementSibling.classList.add("Selecionado");
            Escolhido.nextElementSibling.classList.remove("Invisivel");
-            console.log(Escolhido.nextElementSibling)
+
         }
 }
 
@@ -62,10 +62,10 @@ function CarregarMensagens () {
 }
 
 function processarMensagens (response) {
-    console.log(response.data);
+
 
     let conteudo = document.querySelector(".Conteudo")
-    console.log(response.data.length);
+
     conteudo.innerHTML = ""
 
 
@@ -81,10 +81,16 @@ function processarMensagens (response) {
         else {
            Para = "Para"
         }
+        if (Mensagem.type === "private_message" && Mensagem.to !== nick) {
+            console.log(Mensagem.type)
+        }
+        else {
+            conteudo.innerHTML += `             <div class="Mensagem ${Mensagem.type}">
+            <p> (${Mensagem.time}) <strong>${Mensagem.from}</strong> ${Para}  <strong> ${Mensagem.to} </strong> ${Mensagem.text}</p>
+        </div>`
+        }
 
-        conteudo.innerHTML += `             <div class="Mensagem ${Mensagem.type}">
-        <p> (${Mensagem.time}) <strong>${Mensagem.from}</strong> ${Para}  <strong> ${Mensagem.to} </strong> ${Mensagem.text}</p>
-    </div>`
+        
 
 
     }
@@ -95,7 +101,7 @@ function processarMensagens (response) {
 }
 
 setInterval( function CarregarAxios() {
-    const  promise = axios.get('https://mock-api.driven.com.br/api/v6/uol/messages');
+   const  promise = axios.get('https://mock-api.driven.com.br/api/v6/uol/messages');
     promise.then(Atualizar);
 }, 2000);
 
@@ -103,8 +109,7 @@ function Atualizar (response) {
     
     let UltimaNaAPI = response.data [response.data.length-1]
 
-    console.log(UltimaMensagem)
-    console.log(UltimaNaAPI)
+
 
     if (UltimaMensagem.message !== UltimaNaAPI.message || UltimaMensagem.time !== UltimaNaAPI.time ) {
         CarregarMensagens ()
@@ -116,33 +121,58 @@ function Atualizar (response) {
 
 function EnviarMensagem() {
 
-    let Textoensagem = document.querySelector("input").innerHTML
+    let Textoensagem = document.querySelector("input").value;
+
+    console.log(Textoensagem)
 
     let Mensagem = {
-        from: ` ${nick}` ,
-        text: ` ${Textoensagem}` ,
-        to: ` Todos` ,
-        type: ` message` 
+        from: `${nick}` ,
+        text: `${Textoensagem}` ,
+        to: `Todos` ,
+        type: `message` 
 
     }
 
+    console.log(Mensagem)
     const requisicao = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', Mensagem);
 
+    requisicao.then(processarMensagens)
+    requisicao.catch(erroAOenviar)
+}
+
+
+function erroAOenviar () {
+
+    window.location.reload()
 }
 
 function QuemEhVoce () {
 
      nick = prompt("Quem é você ?")
-     LogarEManter ();
+     Logar ();
 
 }
 
-function LogarEManter () {
+function Logar () {
 
-    const nickname = {name: ` ${nick}`};
-    console.log(nickname)
-    const response = axios.post('https://mock-api.driven.com.br/api/v6/uol/status', nickname);
+    const nickname = {name: `${nick}`};
+    const promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', nickname);
+    console.log(promessa)
+    promessa.then(setInterval (Manter , 4000));
+    promessa.catch(erroAologar)
+
+}
+
+function erroAologar () {
+
+    nick = prompt("Esse nome já esta em uso, tente outro")
+     Logar ();
+}
+
+function Manter () {
+
+    console.log("entrei em manter")
+     const nickname = {name: `${nick}`};
+    const response = axios.post('https://mock-api.driven.com.br/api/v6/uol/status', nickname); 
     console.log(response)
 }
-
-setInterval(LogarEManter () , 3000);  
